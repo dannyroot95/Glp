@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "195399207908",
+    "firebase_url": "https://glpiot-default-rtdb.firebaseio.com",
+    "project_id": "glpiot",
+    "storage_bucket": "glpiot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195399207908:android:c8ade7b94b2f52c77e15f1",
+        "android_client_info": {
+          "package_name": "com.electric.glp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195399207908-i65vlj2s1itre1nuej8l5emeiv6nqu4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.electric.glp",
+            "certificate_hash": "e56a0e0ad8a0c4d02ccbec439c7ecc5648d3ffac"
+          }
+        },
+        {
+          "client_id": "195399207908-jjpob0pqiqpftrk8v8dhkevmq1pehrnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl0z9gnLCYx2MrD_2uDikn6WvKkqi8WM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195399207908-jjpob0pqiqpftrk8v8dhkevmq1pehrnp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

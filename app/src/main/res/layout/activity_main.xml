@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/icon_glp"
+            android:layout_height="200dp"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+        <!-- Correo -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:hint="Correo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:fontFamily="sans-serif-light"
+                android:id="@+id/emailEditText"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:hint="Contraseña"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/passwordEditText"
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contraseña -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Iniciar SESION"
+            android:fontFamily="sans-serif-light"
+            app:cornerRadius="15dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="No tienes una cuenta?"
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text=" registrate"
+                android:fontFamily="sans-serif-light"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="ó"
+            android:layout_height="wrap_content"/>
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"/>
+
+        <TextView
+            android:text="Iniciar con Google"
+            android:padding="16dp"
+            android:gravity="center"
+            android:background="@drawable/radius"
+            android:id="@+id/googleSignInButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/googleg_standard_color_18"/>
+
+    </LinearLayout>
+
+</LinearLayout>
