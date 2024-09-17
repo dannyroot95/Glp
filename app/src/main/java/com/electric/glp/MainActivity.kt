@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
@@ -18,6 +19,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,11 +59,17 @@ class MainActivity : AppCompatActivity() {
             signInWithGoogle()
         }
 
+        binding.txtGoToRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
         getParametersSensor(database)
     }
 
 
     private fun signInWithEmail(email: String, password: String) {
+        setLoadingState(true)
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -69,15 +77,14 @@ class MainActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     val database = FirebaseDatabase.getInstance().getReference("users")
                     database.child(user!!.uid).setValue(user.email)
-
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
                     // Redirige a la actividad principal o donde desees
-                    val intent = Intent(this, MainActivity::class.java)
+                    setLoadingState(false)
+                    val intent = Intent(this, SyncActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    // Si falla el inicio de sesión
-                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    setLoadingState(false)
+                    Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -94,9 +101,11 @@ class MainActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
+                setLoadingState(true)
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
-                Log.w("LoginActivity", "Google sign in failed", e)
+                setLoadingState(false)
+                Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -108,17 +117,68 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Inicio de sesión con Google exitoso
                     val user = auth.currentUser
-                    val database = FirebaseDatabase.getInstance().getReference("users")
-                    database.child(user!!.uid).setValue(user.email)
-                    Toast.makeText(this, "Login with Google Successful", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    val firestore = FirebaseFirestore.getInstance()
+
+                    if (user != null) {
+                        val userId = user.uid
+                        val email = user.email
+                        val nombres = acct?.givenName ?: ""
+                        val apellidos = acct?.familyName ?: ""
+                        val organizacion = ""  // Google no proporciona organización, pero se puede dejar en blanco
+
+                        // Verificar si el usuario ya existe en Firestore
+                        firestore.collection("users").document(userId).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    // El usuario ya existe en Firestore, ahora verificar el deviceId
+                                    val deviceId = document.getString("deviceId")
+                                    if (deviceId.isNullOrEmpty()) {
+                                        Toast.makeText(this, "El campo deviceId está vacío.", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                    // Continuar con la aplicación
+                                    setLoadingState(false)
+                                    val intent = Intent(this, SyncActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+
+                                } else {
+                                    // El usuario no existe, registrar la información en Firestore
+                                    val userInfo = hashMapOf(
+                                        "nombres" to nombres,
+                                        "apellidos" to apellidos,
+                                        "organizacion" to organizacion,
+                                        "email" to email,
+                                        "id" to userId,
+                                        "deviceId" to ""  // El deviceId se puede actualizar más adelante
+                                    )
+
+                                    // Guardar en Firestore
+                                    firestore.collection("users").document(userId).set(userInfo)
+                                        .addOnSuccessListener {
+                                            setLoadingState(false)
+                                            val intent = Intent(this, SyncActivity::class.java)
+                                            startActivity(intent)
+                                            finish()
+                                        }
+                                        .addOnFailureListener {
+                                            setLoadingState(false)
+                                            Toast.makeText(this, "Error al registrar los datos en Firestore", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
+                            }
+                            .addOnFailureListener {
+                                setLoadingState(false)
+                                Toast.makeText(this, "Error al verificar el usuario", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 } else {
-                    Toast.makeText(this, "Authentication with Google failed.", Toast.LENGTH_SHORT).show()
+                    setLoadingState(false)
+                    Toast.makeText(this, "Error en la autenticación con Google", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     private fun getParametersSensor(database: DatabaseReference) {
         database.addValueEventListener(object : ValueEventListener {
@@ -130,6 +190,17 @@ class MainActivity : AppCompatActivity() {
                 println("Failed to read value: ${error.message}")
             }
         })
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        // Deshabilitar los campos y botón mientras se muestra el ProgressBar
+        binding.emailEditText.isEnabled = !isLoading
+        binding.passwordEditText.isEnabled = !isLoading
+        binding.layoutLogin.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    override fun onBackPressed() {
     }
 
 }
