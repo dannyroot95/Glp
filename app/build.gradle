@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:21.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:25.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
 
 
     testImplementation 'junit:junit:4.13.2'

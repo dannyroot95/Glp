@@ -1,19 +1,33 @@
 <!-- res/layout/fragment_third.xml -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page 3" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img3" />
 
-    <Button
-        android:id="@+id/buttonGoToNextActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Next Activity" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonGoToNextActivity"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="230dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#FBFBFB"
+            android:drawableRight="@drawable/ic_arrow_forward"
+            android:fontFamily="sans-serif"
+            android:text="Monitorea Ahora"
+            app:cornerRadius="15dp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

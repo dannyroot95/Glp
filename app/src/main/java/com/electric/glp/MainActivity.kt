@@ -1,5 +1,6 @@
 package com.electric.glp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().getReference("device/xf0001")
     private lateinit var binding : ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -64,30 +64,57 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        getParametersSensor(database)
     }
 
 
     private fun signInWithEmail(email: String, password: String) {
         setLoadingState(true)
+        val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Inicio de sesión exitoso, obtener la referencia de Firebase Realtime Database
                     val user = auth.currentUser
-                    val database = FirebaseDatabase.getInstance().getReference("users")
-                    database.child(user!!.uid).setValue(user.email)
-                    // Redirige a la actividad principal o donde desees
-                    setLoadingState(false)
-                    val intent = Intent(this, SyncActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    if (user != null) {
+                        // Inicio de sesión exitoso, consulta a Firestore
+                        val firestore = FirebaseFirestore.getInstance()
+                        firestore.collection("users").document(user.uid)
+                            .get()
+                            .addOnSuccessListener { document ->
+                                setLoadingState(false)
+                                if (document.exists() && document.data != null) {
+                                    val deviceId = document.getString("deviceId")
+                                    if (deviceId.isNullOrEmpty()) {
+                                        // Si el deviceId está vacío
+                                        saveUserDetailsInPreferences(user.uid,deviceId)
+                                        val intent = Intent(this, SyncActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        // Si el deviceId no está vacío
+                                        saveUserDetailsInPreferences(user.uid,deviceId)
+                                        val intent = Intent(this, ActivityMenu::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Usuario no encontrado!", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                setLoadingState(false)
+                                Toast.makeText(this, "Error de base de datos : ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        setLoadingState(false)
+                        Toast.makeText(this, "Usuario no registrado", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     setLoadingState(false)
-                    Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error de autenticación: ${task.exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
@@ -133,14 +160,19 @@ class MainActivity : AppCompatActivity() {
                                     // El usuario ya existe en Firestore, ahora verificar el deviceId
                                     val deviceId = document.getString("deviceId")
                                     if (deviceId.isNullOrEmpty()) {
-                                        Toast.makeText(this, "El campo deviceId está vacío.", Toast.LENGTH_SHORT).show()
+                                        saveUserDetailsInPreferences(userId,deviceId)
+                                        val intent = Intent(this, SyncActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }else{
+                                        saveUserDetailsInPreferences(userId,deviceId)
+                                        val intent = Intent(this, ActivityMenu::class.java)
+                                        startActivity(intent)
+                                        finish()
                                     }
 
                                     // Continuar con la aplicación
-                                    setLoadingState(false)
-                                    val intent = Intent(this, SyncActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
+
 
                                 } else {
                                     // El usuario no existe, registrar la información en Firestore
@@ -156,7 +188,7 @@ class MainActivity : AppCompatActivity() {
                                     // Guardar en Firestore
                                     firestore.collection("users").document(userId).set(userInfo)
                                         .addOnSuccessListener {
-                                            setLoadingState(false)
+                                            saveUserDetailsInPreferences(userId,"")
                                             val intent = Intent(this, SyncActivity::class.java)
                                             startActivity(intent)
                                             finish()
@@ -180,24 +212,45 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getParametersSensor(database: DatabaseReference) {
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val glpValue = snapshot.child("glp").getValue(Int::class.java)
-                Toast.makeText(this@MainActivity,"Valor glp : $glpValue",Toast.LENGTH_SHORT).show()
-            }
-            override fun onCancelled(error: DatabaseError) {
-                println("Failed to read value: ${error.message}")
-            }
-        })
-    }
-
     private fun setLoadingState(isLoading: Boolean) {
         // Deshabilitar los campos y botón mientras se muestra el ProgressBar
         binding.emailEditText.isEnabled = !isLoading
         binding.passwordEditText.isEnabled = !isLoading
         binding.layoutLogin.visibility = if (isLoading) View.GONE else View.VISIBLE
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun saveUserDetailsInPreferences(userId: String, deviceId: String?) {
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        with(prefs.edit()) {
+            putString("userId", userId)
+            putString("deviceId", deviceId ?: "") // Guarda como cadena vacía si es null
+            apply()
+        }
+    }
+
+    private fun getUserDetailsFromPreferences(): Pair<String?, String?> {
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getString("userId", "")   // Retorna null si no existe la clave "userId"
+        val deviceId = prefs.getString("deviceId", "") // Retorna null si no existe la clave "deviceId"
+        return Pair(userId, deviceId)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val (userId, deviceId) = getUserDetailsFromPreferences()
+        if (userId != "") {
+             if(deviceId != ""){
+                 // No se encontraron datos, posiblemente redirigir al usuario para iniciar sesión
+                 startActivity(Intent(this, ActivityMenu::class.java))
+                 finish()
+             }else{
+                 // No se encontraron datos, posiblemente redirigir al usuario para iniciar sesión
+                 startActivity(Intent(this, SyncActivity::class.java))
+                 finish()
+             }
+
+        }
     }
 
     override fun onBackPressed() {
