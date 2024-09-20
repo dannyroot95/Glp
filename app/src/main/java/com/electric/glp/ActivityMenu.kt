@@ -2,19 +2,21 @@ package com.electric.glp
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import com.electric.glp.databinding.ActivityMainBinding
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.tabs.TabLayoutMediator
 import com.electric.glp.databinding.ActivityMenuBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 
 class ActivityMenu : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMenuBinding
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().getReference("device")
-    private lateinit var auth : FirebaseAuth
+    private lateinit var binding: ActivityMenuBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,42 +27,70 @@ class ActivityMenu : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.btnLogout.setOnClickListener {
-            auth.signOut()
-            clearSpecificPreferences()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            // Crear un AlertDialog Builder
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Cerrar Sesión")
+            builder.setIcon(R.drawable.ic_alert)
+            builder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
+
+            // Agregar botón de confirmación
+            builder.setPositiveButton("Sí") { dialog, which ->
+                auth.signOut()
+                clearSpecificPreferences()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            // Agregar botón de cancelación
+            builder.setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
+            }
+
+            // Mostrar el AlertDialog
+            builder.show()
         }
 
-        getParametersSensor(database)
+
+        setupViewPager()
     }
 
+    private fun setupViewPager() {
+        val adapter = ViewPagerAdapter(this)
+        binding.viewPager.adapter = adapter
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            // Inflar el layout personalizado
+            val tabView = LayoutInflater.from(this).inflate(R.layout.tab_custom_view, null)
+            val tabIcon = tabView.findViewById<ImageView>(R.id.tab_icon)
+            val tabText = tabView.findViewById<TextView>(R.id.tab_text)
 
-    private fun getParametersSensor(database: DatabaseReference) {
-        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val deviceId = prefs.getString("deviceId", null)
-        database.child(deviceId!!).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val glpValue = snapshot.child("glp").getValue(Int::class.java)
-                Toast.makeText(this@ActivityMenu,"Valor glp : $glpValue", Toast.LENGTH_SHORT).show()
+            tabText.text = when (position) {
+                0 -> "Monitoreo"
+                1 -> "Perfil"
+                else -> null
             }
-            override fun onCancelled(error: DatabaseError) {
-                println("Failed to read value: ${error.message}")
-            }
-        })
+            tabIcon.setImageDrawable(when (position) {
+                0 -> ContextCompat.getDrawable(this, R.drawable.ic_monitoring)
+                1 -> ContextCompat.getDrawable(this, R.drawable.ic_user)
+                else -> null
+            })
+
+            // Aplicar el view personalizado al tab
+            tab.customView = tabView
+        }.attach()
+        binding.tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.green))
     }
 
     private fun clearSpecificPreferences() {
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         with(prefs.edit()) {
-            remove("userId")   // Borra solo el userId
-            remove("deviceId") // Borra solo el deviceId
-            apply()            // Aplica los cambios de manera asincrónica
+            remove("userId")
+            remove("deviceId")
+            apply()
         }
     }
 
-
     override fun onBackPressed() {
+        // Prevent back press
     }
-
 }
