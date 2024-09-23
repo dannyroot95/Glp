@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp"
-    android:layout_height="match_parent"
-    tools:context=".GeneralFragment">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
@@ -62,6 +61,12 @@
                 android:indeterminateDrawable="@drawable/loading_progressbar"
                 />
         </RelativeLayout>
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
 
 
     </LinearLayout>
