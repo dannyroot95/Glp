@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "195399207908-mhlde6te02vsrita502oqfl0tot8egsj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.electric.glp",
+            "certificate_hash": "ed3d75c850fbb0feb2adb6156fc6e5f37d50b3aa"
+          }
+        },
+        {
           "client_id": "195399207908-jjpob0pqiqpftrk8v8dhkevmq1pehrnp.apps.googleusercontent.com",
           "client_type": 3
         }

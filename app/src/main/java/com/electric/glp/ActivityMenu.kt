@@ -66,12 +66,14 @@ class ActivityMenu : AppCompatActivity() {
 
             tabText.text = when (position) {
                 0 -> "Monitoreo"
-                1 -> "Perfil"
+                1 -> "Historial"
+                2 -> "Configurar"
                 else -> null
             }
             tabIcon.setImageDrawable(when (position) {
                 0 -> ContextCompat.getDrawable(this, R.drawable.ic_monitoring)
-                1 -> ContextCompat.getDrawable(this, R.drawable.ic_user)
+                1 -> ContextCompat.getDrawable(this, R.drawable.ic_history)
+                2 -> ContextCompat.getDrawable(this, R.drawable.ic_settings)
                 else -> null
             })
 
