@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.electric.glp.Adapters.MyPagerAdapter
+import com.electric.glp.R
 import com.electric.glp.databinding.ActivityOnboardingBinding
 
 class OnBoarding : AppCompatActivity() {
@@ -43,7 +45,9 @@ class OnBoarding : AppCompatActivity() {
         for (i in indicators.indices) {
             indicators[i].apply {
                 this.layoutParams = layoutParams
-                this.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.indicator_inactive))
+                this.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.indicator_inactive
+                ))
                 binding.indicatorContainer.addView(this)
             }
         }
@@ -54,10 +58,14 @@ class OnBoarding : AppCompatActivity() {
     private fun updateIndicators(position: Int) {
         for (i in indicators.indices) {
             if (i == position) {
-                indicators[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.indicator_active))
+                indicators[i].setImageDrawable(ContextCompat.getDrawable(this,
+                    R.drawable.indicator_active
+                ))
                 Log.d("Onboarding", "Active Indicator: $i")
             } else {
-                indicators[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.indicator_inactive))
+                indicators[i].setImageDrawable(ContextCompat.getDrawable(this,
+                    R.drawable.indicator_inactive
+                ))
                 Log.d("Onboarding", "Inactive Indicator: $i")
             }
         }

@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import com.electric.glp.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
@@ -62,7 +61,12 @@ class RegisterActivity : AppCompatActivity() {
                             "organizacion" to organizacion,
                             "email" to correo,
                             "id" to userId,
-                            "deviceId" to ""
+                            "deviceId" to "",
+                            "typeLogin" to "Email",
+                            "notificationStatus" to false,
+                            "monitoringInSeconds" to 300000,
+                            "modeRegisters" to "a"
+
                         )
 
                         // Guardar el documento en la colección "users" en Firestore

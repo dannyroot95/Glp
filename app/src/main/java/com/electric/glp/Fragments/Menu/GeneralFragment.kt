@@ -1,3 +1,5 @@
+package com.electric.glp.Fragments.Menu
+
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.electric.glp.Utils.ConvertTimestampToDateTime
 import com.electric.glp.databinding.FragmentGeneralBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -130,8 +133,12 @@ class GeneralFragment : Fragment() {
                 database.child(deviceId).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val glpValue = dataSnapshot.child("glp").getValue(Int::class.java) ?: 0
+                        val coValue = dataSnapshot.child("co").getValue(Int::class.java) ?: 0
+                        val smokeValue = dataSnapshot.child("smoke").getValue(Int::class.java) ?: 0
+                        binding.coValue.text = "$coValue"
+                        binding.smokeValue.text = "$smokeValue"
                         binding.glpValue.text = "$glpValue"
-                        binding.lastUpdateTime.text = "Última actualización: " + convertTimestampToDateTime(timeValue)
+                        binding.lastUpdateTime.text = "Última actualización: " + ConvertTimestampToDateTime().convert(timeValue)
 
                         // Agregar el valor al gráfico
                         val entry = Entry(dataEntries.size.toFloat(), glpValue.toFloat()) // x = índice, y = valor glp
@@ -201,10 +208,14 @@ class GeneralFragment : Fragment() {
                 dataEntries.clear()
                 snapshot.children.forEach { child ->
                     val glpValue = child.child("glp").getValue(Int::class.java) ?: 0
+                    val coValue = child.child("co").getValue(Int::class.java) ?: 0
+                    val smokeValue = child.child("smoke").getValue(Int::class.java) ?: 0
                     val timeValue = child.child("timestamp").getValue(Long::class.java) ?: 0
 
                     binding.glpValue.text = "$glpValue"
-                    binding.lastUpdateTime.text = "Ultima actualizacion : "+convertTimestampToDateTime(timeValue)
+                    binding.coValue.text = "$coValue"
+                    binding.smokeValue.text = "$smokeValue"
+                    binding.lastUpdateTime.text = "Ultima actualizacion : "+ConvertTimestampToDateTime().convert(timeValue)
 
                     val index = (ctx++).toFloat()
                     val entry = Entry(index, glpValue.toFloat())
@@ -250,30 +261,23 @@ class GeneralFragment : Fragment() {
         }
     }
 
-    fun convertTimestampToDateTime(timestamp: Long): String {
-        // El timestamp recibido está en segundos, necesitamos convertirlo a milisegundos
-        val date = Date(timestamp * 1000L)
-
-        // Definimos el formato de salida: día/mes/año y hora:minuto
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-
-        // Convertimos el Date a la cadena con el formato deseado
-        return format.format(date)
-    }
-
     private fun saveRegisterToDatabase() {
 
         if(onRegister == "on"){
             val prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             val deviceId = prefs.getString("deviceId", null)
             val glpValue = binding.glpValue.text.toString().toInt()
+            val coValue = binding.coValue.text.toString().toInt()
+            val smokeValue = binding.smokeValue.text.toString().toInt()
             val timestamp = System.currentTimeMillis() / 1000
 
             if (deviceId != null && timestamp != 0L) {
                 val databaseRef = database.child(deviceId).child("registers").push()  // Crea un nuevo nodo en 'registers'
                 val registerData = mapOf(
                     "glp" to glpValue,
-                    "timestamp" to timestamp
+                    "timestamp" to timestamp,
+                    "co" to coValue,
+                    "smoke" to smokeValue
                 )
 
                 databaseRef.setValue(registerData)

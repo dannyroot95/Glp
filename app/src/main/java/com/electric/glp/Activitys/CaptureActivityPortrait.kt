@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import com.journeyapps.barcodescanner.CaptureActivity
 

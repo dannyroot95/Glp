@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:id="@+id/imageViewStatus"
+                android:layout_height="60dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Fecha"
+                android:fontFamily="sans-serif-light"
+                android:id="@+id/itDate"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/itGlp"
+                android:fontFamily="sans-serif-light"
+                android:hint="GLP"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/itCO"
+                android:fontFamily="sans-serif-light"
+                android:hint="CO"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/itSmoke"
+                android:fontFamily="sans-serif-light"
+                android:hint="somke"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="35dp"
+            android:id="@+id/btnDelete"
+            android:src="@drawable/ic_delete"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

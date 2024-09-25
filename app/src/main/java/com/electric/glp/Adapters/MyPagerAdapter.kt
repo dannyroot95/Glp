@@ -1,8 +1,11 @@
-package com.electric.glp
+package com.electric.glp.Adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.electric.glp.Fragments.Sliders.FirstFragment
+import com.electric.glp.Fragments.Sliders.SecondFragment
+import com.electric.glp.Fragments.Sliders.ThirdFragment
 
 
 class MyPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {

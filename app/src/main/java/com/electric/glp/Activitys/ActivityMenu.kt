@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.electric.glp.R
+import com.electric.glp.Adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.electric.glp.databinding.ActivityMenuBinding
 import com.google.firebase.auth.FirebaseAuth

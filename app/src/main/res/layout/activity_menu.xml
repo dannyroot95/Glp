@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityMenu">
+    tools:context=".Activitys.ActivityMenu">
 
     <!-- Barra de título personalizada -->
     <LinearLayout

@@ -64,45 +64,116 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
+            android:orientation="horizontal"
             android:layout_weight="1"
             android:layout_height="wrap_content">
 
-
             <LinearLayout
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_height="200dp">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <TextView
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/co" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:id="@+id/glpValue"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="30dp"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text=" ppm"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    android:layout_height="200dp"/>
-
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/coValue"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="wrap_content"
+                        android:textSize="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" ppm"
+                        android:textSize="10dp" />
+                </LinearLayout>
 
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/loading_progress"
-                android:layout_width="200dp"
-                android:layout_gravity="center"
-                android:layout_height="200dp"
-                android:indeterminateDrawable="@drawable/loading_progressbar"
-                />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_height="200dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/glpValue"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="30dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text=" ppm\nGlp"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_height="200dp"/>
+
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/loading_progress"
+                    android:layout_width="200dp"
+                    android:layout_gravity="center"
+                    android:layout_height="200dp"
+                    android:indeterminateDrawable="@drawable/loading_progressbar"
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/smoke" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/smokeValue"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="wrap_content"
+                        android:textSize="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" ppm"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"

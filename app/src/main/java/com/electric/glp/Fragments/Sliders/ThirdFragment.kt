@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Fragments.Sliders
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.electric.glp.Activitys.MainActivity
 import com.electric.glp.databinding.FragmentThirdBinding
 
 

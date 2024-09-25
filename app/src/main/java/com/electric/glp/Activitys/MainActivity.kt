@@ -1,16 +1,12 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import android.widget.Toast
+import com.electric.glp.R
 import com.electric.glp.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -19,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -182,7 +177,11 @@ class MainActivity : AppCompatActivity() {
                                         "organizacion" to organizacion,
                                         "email" to email,
                                         "id" to userId,
-                                        "deviceId" to ""  // El deviceId se puede actualizar más adelante
+                                        "deviceId" to "" , // El deviceId se puede actualizar más adelante
+                                        "typeLogin" to "Google",
+                                        "notificationStatus" to false,
+                                        "monitoringInSeconds" to 300000,
+                                        "modeRegisters" to "a"
                                     )
 
                                     // Guardar en Firestore

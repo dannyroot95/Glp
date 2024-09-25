@@ -1,8 +1,11 @@
-package com.electric.glp
+package com.electric.glp.Adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.electric.glp.Fragments.Menu.ConfigFragment
+import com.electric.glp.Fragments.Menu.GeneralFragment
+import com.electric.glp.Fragments.Menu.RegistersFragment
 
 class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 3

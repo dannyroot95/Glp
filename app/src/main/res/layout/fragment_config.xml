@@ -3,11 +3,279 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConfigFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    tools:context=".Fragments.Menu.ConfigFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="CONFIG FRAGMENT" />
+        android:orientation="vertical"
+        android:id="@+id/linearLottie3"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:indeterminateTint="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@android:style/Widget.Material.ProgressBar" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="-5dp"
+        android:id="@+id/linearFragment3"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Mi perfil"
+            android:fontFamily="sans-serif-light"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_user_gray"
+            android:layout_height="100dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Nombres"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nombresEditText"
+                    android:layout_width="match_parent"
+                    android:textSize="12dp"
+                    android:inputType="textCapCharacters"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="0dp"/>
+
+            <!-- Apellidos -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Apellidos"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/apellidosEditText"
+                    android:textSize="12dp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:inputType="textCapCharacters"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Organización"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/organizacionEditText"
+                    android:layout_width="match_parent"
+                    android:textSize="12dp"
+                    android:inputType="textCapCharacters"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="0dp"/>
+
+            <!-- Apellidos -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Correo"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/correoEditText"
+                    android:layout_width="match_parent"
+                    android:textSize="12dp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Tipo de acceso: "
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/typeLogin"
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/serieDevice"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="Actualizar datos"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/teal_700"
+            android:drawableLeft="@drawable/ic_update"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Monitoreo"
+            android:fontFamily="sans-serif-light"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Tipo de almacenamiento"
+                android:fontFamily="sans-serif"
+                android:textSize="11dp"
+                android:gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:text="Manual"
+                android:checked="true"
+                android:buttonTint="#035E8F"
+                android:fontFamily="sans-serif-light"
+                android:textSize="11dp"
+                android:layout_height="match_parent"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:text="Automático"
+                android:buttonTint="#035E8F"
+                android:fontFamily="sans-serif-light"
+                android:textSize="11dp"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:text="Tiempo de almacenamiento de registros"
+            android:fontFamily="sans-serif"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Tiempo en minutos"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/timeInMinutes"
+                    android:layout_width="match_parent"
+                    android:textSize="12dp"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:text="Guardar"
+                android:drawableLeft="@drawable/ic_save_white"
+                android:textSize="11dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Activa / Desactiva las notificaciones de alertas"
+                android:fontFamily="sans-serif"
+                android:textSize="11dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </FrameLayout>

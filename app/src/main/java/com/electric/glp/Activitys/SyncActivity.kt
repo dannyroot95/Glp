@@ -1,4 +1,4 @@
-package com.electric.glp
+package com.electric.glp.Activitys
 
 import android.content.Context
 import android.content.Intent
