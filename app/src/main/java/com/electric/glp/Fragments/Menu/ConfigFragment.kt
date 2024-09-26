@@ -113,7 +113,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config), OnMapReadyCallback {
     private fun updateMonitoringSettings() {
         val userId = context?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)?.getString("userId", null)
         userId?.let {
-            val monitoringValue = binding.timeInMinutes.text.toString().toInt() * 1000  // Convertir minutos a milisegundos
+            val monitoringValue = (binding.timeInMinutes.text.toString().toInt() * (60/1) * (1000/1))  // Convertir minutos a milisegundos
             val userRef = FirebaseFirestore.getInstance().collection("users").document(it)
             userRef.update("monitoringInSeconds", monitoringValue)
             Toast.makeText(binding.root.context,"Tiempo actualizado!",Toast.LENGTH_SHORT).show()
