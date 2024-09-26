@@ -48,6 +48,11 @@
         <activity
             android:name=".Activitys.ActivityMenu"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDh7U0aNiNGd0oLz7CLzdluscfw2ojSnsc"/>
+
     </application>
 
 </manifest>

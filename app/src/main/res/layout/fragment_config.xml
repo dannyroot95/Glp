@@ -29,252 +29,299 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="-5dp"
+
         android:id="@+id/linearFragment3"
         android:layout_height="match_parent">
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:text="Mi perfil"
-            android:fontFamily="sans-serif-light"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:src="@drawable/ic_user_gray"
-            android:layout_height="100dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Nombres"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nombresEditText"
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:textSize="12dp"
-                    android:inputType="textCapCharacters"
+                    android:text="Mi perfil"
                     android:fontFamily="sans-serif-light"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
-            <View
-                android:layout_width="5dp"
-                android:layout_height="0dp"/>
-
-            <!-- Apellidos -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Apellidos"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/apellidosEditText"
-                    android:textSize="12dp"
-                    android:fontFamily="sans-serif-light"
+                <ImageView
                     android:layout_width="match_parent"
-                    android:inputType="textCapCharacters"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:src="@drawable/ic_user_gray"
+                    android:layout_height="100dp"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Organización"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/organizacionEditText"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textSize="12dp"
-                    android:inputType="textCapCharacters"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
-            <View
-                android:layout_width="5dp"
-                android:layout_height="0dp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombres"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <!-- Apellidos -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Correo"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nombresEditText"
+                            android:layout_width="match_parent"
+                            android:textSize="12dp"
+                            android:inputType="textCapCharacters"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/correoEditText"
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="0dp"/>
+
+                    <!-- Apellidos -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Apellidos"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/apellidosEditText"
+                            android:textSize="12dp"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_width="match_parent"
+                            android:inputType="textCapCharacters"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textSize="12dp"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Organización"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/organizacionEditText"
+                            android:layout_width="match_parent"
+                            android:textSize="12dp"
+                            android:inputType="textCapCharacters"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Tipo de acceso: "
-                android:fontFamily="sans-serif-light"
-                android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="0dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/typeLogin"
-                android:fontFamily="sans-serif-light"
-                android:layout_height="wrap_content"/>
+                    <!-- Apellidos -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Correo"
 
-        </LinearLayout>
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/correoEditText"
+                            android:layout_width="match_parent"
+                            android:textSize="12dp"
+                            android:enabled="false"
+                            android:textColor="@color/black"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/serieDevice"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-light"
-            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:text="Actualizar datos"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/teal_700"
-            android:drawableLeft="@drawable/ic_update"
-            android:textSize="11dp"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:text="Monitoreo"
-            android:fontFamily="sans-serif-light"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Tipo de almacenamiento"
-                android:fontFamily="sans-serif"
-                android:textSize="11dp"
-                android:gravity="center_vertical"
-                android:layout_marginRight="10dp"
-                android:layout_height="match_parent"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:text="Manual"
-                android:checked="true"
-                android:buttonTint="#035E8F"
-                android:fontFamily="sans-serif-light"
-                android:textSize="11dp"
-                android:layout_height="match_parent"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:text="Automático"
-                android:buttonTint="#035E8F"
-                android:fontFamily="sans-serif-light"
-                android:textSize="11dp"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:text="Tiempo de almacenamiento de registros"
-            android:fontFamily="sans-serif"
-            android:textSize="11dp"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Tiempo en minutos"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/timeInMinutes"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textSize="12dp"
-                    android:inputType="number"
-                    android:maxLength="2"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Tipo de acceso: "
+                        android:textSize="12dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/typeLogin"
+                        android:layout_marginRight="15dp"
+                        android:textSize="12dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:id="@+id/serieDevice"
+                        android:textSize="12dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="Actualizar datos"
+                    android:layout_gravity="center"
+                    android:id="@+id/btnSave"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/teal_700"
+                    android:drawableLeft="@drawable/ic_update"
+                    android:textSize="11dp"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Monitoreo"
                     android:fontFamily="sans-serif-light"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:text="Guardar"
-                android:drawableLeft="@drawable/ic_save_white"
-                android:textSize="11dp"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Activa / Desactiva las notificaciones de alertas"
-                android:fontFamily="sans-serif"
-                android:textSize="11dp"
-                android:layout_marginRight="10dp"
-                android:layout_height="match_parent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Tipo de almacenamiento"
+                        android:fontFamily="sans-serif"
+                        android:textSize="11dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="match_parent"/>
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:text="Manual"
+                        android:id="@+id/chkManual"
+                        android:buttonTint="#035E8F"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="11dp"
+                        android:layout_height="match_parent"/>
 
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:text="Automático"
+                        android:id="@+id/chkAuto"
+                        android:buttonTint="#035E8F"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="11dp"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="Tiempo de almacenamiento de registros"
+                    android:fontFamily="sans-serif"
+                    android:textSize="11dp"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Tiempo en minutos"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/timeInMinutes"
+                            android:layout_width="match_parent"
+                            android:textSize="12dp"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:text="Guardar"
+                        android:id="@+id/btnSaveMonitoring"
+                        android:drawableLeft="@drawable/ic_save_white"
+                        android:textSize="11dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Activa / Desactiva las notificaciones de alertas"
+                        android:fontFamily="sans-serif"
+                        android:textSize="11dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="match_parent"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        app:trackTint="@color/green"
+                        android:id="@+id/notificationSwitch"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Ubicación"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_height="wrap_content"/>
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"/>
+
+            </LinearLayout>
+
+
+        </ScrollView>
     </LinearLayout>
 
 
