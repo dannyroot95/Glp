@@ -16,8 +16,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.database.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class GeneralFragment : Fragment() {
@@ -39,6 +37,7 @@ class GeneralFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listenerModeRegister()
         setupLineChart()
         getParametersSensorFilter(database, "lastHour")
         updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
@@ -80,7 +79,7 @@ class GeneralFragment : Fragment() {
             saveRegisterToDatabase()
         }
 
-    }
+  }
 
     private fun updateChipSelection(selectedChip: View, deselectedChip: View,deselectedChip2: View,deselectedChip3: View, selectedTextColor: Int, deselectedTextColor: Int) {
         // Actualiza el chip seleccionado
@@ -205,25 +204,34 @@ class GeneralFragment : Fragment() {
         var ctx = 0
         currentListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                dataEntries.clear()
-                snapshot.children.forEach { child ->
-                    val glpValue = child.child("glp").getValue(Int::class.java) ?: 0
-                    val coValue = child.child("co").getValue(Int::class.java) ?: 0
-                    val smokeValue = child.child("smoke").getValue(Int::class.java) ?: 0
-                    val timeValue = child.child("timestamp").getValue(Long::class.java) ?: 0
+                if(snapshot.exists()){
+                    dataEntries.clear()
+                    snapshot.children.forEach { child ->
+                        val glpValue = child.child("glp").getValue(Int::class.java) ?: 0
+                        val coValue = child.child("co").getValue(Int::class.java) ?: 0
+                        val smokeValue = child.child("smoke").getValue(Int::class.java) ?: 0
+                        val timeValue = child.child("timestamp").getValue(Long::class.java) ?: 0
 
-                    binding.glpValue.text = "$glpValue"
-                    binding.coValue.text = "$coValue"
-                    binding.smokeValue.text = "$smokeValue"
-                    binding.lastUpdateTime.text = "Ultima actualizacion : "+ConvertTimestampToDateTime().convert(timeValue)
+                        binding.glpValue.text = "$glpValue"
+                        binding.coValue.text = "$coValue"
+                        binding.smokeValue.text = "$smokeValue"
+                        binding.lastUpdateTime.text = "Ultima actualizacion : "+ConvertTimestampToDateTime().convert(timeValue)
 
-                    val index = (ctx++).toFloat()
-                    val entry = Entry(index, glpValue.toFloat())
-                    dataEntries.add(entry)
+                        val index = (ctx++).toFloat()
+                        val entry = Entry(index, glpValue.toFloat())
+                        dataEntries.add(entry)
+                    }
+                    updateLineChart()
+                    binding.linearFragment1.visibility = View.VISIBLE
+                    binding.linearLottie.visibility = View.GONE
+                }else{
+                    binding.linearFragment1.visibility = View.GONE
+                    binding.linearLottie.visibility = View.VISIBLE
+                    onRegister = "on"
+                    updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
+                    getParametersSensor(database)
                 }
-                updateLineChart()
-                binding.linearFragment1.visibility = View.VISIBLE
-                binding.linearLottie.visibility = View.GONE
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -293,6 +301,26 @@ class GeneralFragment : Fragment() {
 
     }
 
+    private fun listenerModeRegister(){
+        val prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val deviceId = prefs.getString("deviceId", null)
+
+        if (deviceId != null) {
+            database.child(deviceId).addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val modeRegisters = snapshot.child("modeRegisters").getValue(String::class.java)
+                    if (modeRegisters == "m") {
+                        binding.btnSaveRegister.visibility = View.VISIBLE
+                    } else {
+                        binding.btnSaveRegister.visibility = View.GONE
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

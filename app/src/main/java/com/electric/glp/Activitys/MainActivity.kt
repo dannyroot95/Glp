@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                                     if (deviceId.isNullOrEmpty()) {
                                         // Si el deviceId está vacío
                                         saveUserDetailsInPreferences(user.uid,deviceId)
-                                        val intent = Intent(this, SyncActivity::class.java)
+                                        val intent = Intent(this, SyncActivityOld::class.java)
                                         startActivity(intent)
                                         finish()
                                     } else {

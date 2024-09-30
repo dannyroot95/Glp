@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp"
     tools:context=".Fragments.Menu.ConfigFragment">
 
@@ -29,12 +28,13 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="-5dp"
-
+        android:visibility="gone"
         android:id="@+id/linearFragment3"
         android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
+            android:scrollbars="none"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -278,6 +278,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content">
 
@@ -292,9 +293,10 @@
 
                     <Switch
                         android:layout_width="wrap_content"
-                        app:trackTint="@color/green"
+                        android:thumbTint="@color/purple_200"
                         android:id="@+id/notificationSwitch"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
                 </LinearLayout>
 
                 <View

@@ -42,20 +42,28 @@ class RegistersFragment : Fragment() {
         // Asumiendo que 'database' ya está inicializada correctamente apuntando a 'registers'
         database.orderByChild("timestamp").limitToLast(20).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val registers = mutableListOf<RegisterData>()
-                snapshot.children.forEach { child ->
-                    val glp = child.child("glp").getValue(Int::class.java) ?: 0
-                    val timestamp = child.child("timestamp").getValue(Long::class.java) ?: 0
-                    val co = child.child("co").getValue(Int::class.java) ?: 0
-                    val smoke = child.child("smoke").getValue(Int::class.java) ?: 0
-                    val key = child.key ?: ""
-                    registers.add(RegisterData(glp, timestamp, co, smoke, key))
+                if(snapshot.exists()){
+                    val registers = mutableListOf<RegisterData>()
+                    snapshot.children.forEach { child ->
+                        val glp = child.child("glp").getValue(Int::class.java) ?: 0
+                        val timestamp = child.child("timestamp").getValue(Long::class.java) ?: 0
+                        val co = child.child("co").getValue(Int::class.java) ?: 0
+                        val smoke = child.child("smoke").getValue(Int::class.java) ?: 0
+                        val key = child.key ?: ""
+                        registers.add(RegisterData(glp, timestamp, co, smoke, key))
+                    }
+                    // Invertimos la lista para tener los registros del más reciente al más antiguo
+                    registers.reverse()
+                    adapter.updateData(registers)
+                    binding.linearFragment2.visibility = View.VISIBLE
+                    binding.linearLottie2.visibility = View.GONE
+                    binding.linearEmpty.visibility = View.GONE
+                }else{
+                    binding.linearFragment2.visibility = View.GONE
+                    binding.linearLottie2.visibility = View.GONE
+                    binding.linearEmpty.visibility = View.VISIBLE
                 }
-                // Invertimos la lista para tener los registros del más reciente al más antiguo
-                registers.reverse()
-                adapter.updateData(registers)
-                binding.linearFragment2.visibility = View.VISIBLE
-                binding.linearLottie2.visibility = View.GONE
+
             }
 
             override fun onCancelled(error: DatabaseError) {
