@@ -136,7 +136,7 @@ class SyncActivity : AppCompatActivity() {
                         .create().show()
                 }
             }else{
-                Toast.makeText(this,"Activa tu GPS!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Obteniendo ubicacion , espere...",Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -146,7 +146,7 @@ class SyncActivity : AppCompatActivity() {
                 type = "qr"
                 initScanner()
             }else{
-                Toast.makeText(this,"Activa tu GPS!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Obteniendo ubicacion , espere...",Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -476,11 +476,13 @@ class SyncActivity : AppCompatActivity() {
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
-                Toast.makeText(this@SyncActivity,"Dispositivo Conectado",Toast.LENGTH_SHORT).show()
-                if (!isMobileDataActive()) {
-                    scanWifi()
-                }else{
-                    showAlertDialog("Conexión de datos móviles", "Tienes conexión de datos móviles activa")
+                runOnUiThread {
+                    Toast.makeText(this@SyncActivity, "Dispositivo Conectado", Toast.LENGTH_SHORT).show()
+                    if (!isMobileDataActive()) {
+                        scanWifi()
+                    } else {
+                        showAlertDialog("Conexión de datos móviles", "Tienes conexión de datos móviles activa")
+                    }
                 }
             }
 

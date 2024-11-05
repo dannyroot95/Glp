@@ -59,10 +59,10 @@ class GLPMonitoringService : Service() {
         valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val glpValue = snapshot.child("glp").getValue(Int::class.java) ?: return
-                if (glpValue > 50 && !isNotificationSent) {
+                if (glpValue > 900 && !isNotificationSent) {
                     sendAlert("Alerta de GLP", "Nivel de GLP alto: $glpValue"+"ppm")
                     isNotificationSent = true
-                } else if (glpValue <= 50) {
+                } else if (glpValue <= 900) {
                     isNotificationSent = false
                 }
             }
