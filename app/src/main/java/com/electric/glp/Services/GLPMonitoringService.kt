@@ -1,5 +1,6 @@
 package com.electric.glp.Services
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -30,6 +31,7 @@ class GLPMonitoringService : Service() {
         setupFirebaseListener()
     }
 
+    @SuppressLint("ForegroundServiceType")
     private fun startForegroundService() {
         val notification = createNotification()
         startForeground(1, notification)
@@ -59,10 +61,10 @@ class GLPMonitoringService : Service() {
         valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val glpValue = snapshot.child("glp").getValue(Int::class.java) ?: return
-                if (glpValue > 900 && !isNotificationSent) {
+                if (glpValue > 800 && !isNotificationSent) {
                     sendAlert("Alerta de GLP", "Nivel de GLP alto: $glpValue"+"ppm")
                     isNotificationSent = true
-                } else if (glpValue <= 900) {
+                } else if (glpValue <= 800) {
                     isNotificationSent = false
                 }
             }
@@ -80,11 +82,8 @@ class GLPMonitoringService : Service() {
 
         // Verificar si ya está mostrando la notificación
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val activeNotifications = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val activeNotifications =
             notificationManager.activeNotifications
-        } else {
-            null
-        }
 
         if (activeNotifications?.any { it.id == notificationId } == true) {
             // Si la notificación ya se está mostrando y el estado no ha cambiado, no hacer nada
@@ -93,12 +92,10 @@ class GLPMonitoringService : Service() {
 
         // Si la notificación no se encuentra activa, proceder a mostrar una nueva
         val channelId = "glp_alert_channel"  // ID del canal para notificaciones
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel = NotificationChannel(channelId, "GLP Alertas", importance)
-            notificationChannel.description = "Notificaciones de alertas de GLP"
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val notificationChannel = NotificationChannel(channelId, "GLP Alertas", importance)
+        notificationChannel.description = "Notificaciones de alertas de GLP"
+        notificationManager.createNotificationChannel(notificationChannel)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setAutoCancel(true)

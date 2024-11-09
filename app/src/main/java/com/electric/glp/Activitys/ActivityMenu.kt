@@ -18,6 +18,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.electric.glp.databinding.ActivityMenuBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 
 class ActivityMenu : AppCompatActivity() {
 
@@ -30,6 +33,8 @@ class ActivityMenu : AppCompatActivity() {
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
+
+        requestNotificationPermission()
 
         auth = FirebaseAuth.getInstance()
 
@@ -141,6 +146,36 @@ class ActivityMenu : AppCompatActivity() {
             remove("deviceId")
             apply()
         }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33 y superior
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Permiso concedido
+            } else {
+                requestNotificationPermission()            }
+        }
+    }
+
+    companion object {
+        const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     }
 
     override fun onBackPressed() {

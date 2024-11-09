@@ -138,7 +138,6 @@ class SyncActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"Obteniendo ubicacion , espere...",Toast.LENGTH_SHORT).show()
             }
-
         }
 
         binding.btnOnlyQr.setOnClickListener {
@@ -148,7 +147,6 @@ class SyncActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"Obteniendo ubicacion , espere...",Toast.LENGTH_SHORT).show()
             }
-
         }
 
         showPermissionExplanationIfNeeded()
@@ -160,7 +158,6 @@ class SyncActivity : AppCompatActivity() {
             // Solicitar permisos
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION)
         }
-
     }
 
     private fun getLocationUpdates() {
@@ -243,7 +240,6 @@ class SyncActivity : AppCompatActivity() {
                     Toast.makeText(this@SyncActivity, "No existe dispositivo!", Toast.LENGTH_LONG).show()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
@@ -269,7 +265,6 @@ class SyncActivity : AppCompatActivity() {
                     val filteredResults = results
                         .filterNot { it.SSID.isBlank() }
                         .distinctBy { it.SSID }
-
                     wifiNetworkAdapter.updateData(filteredResults)
                 }
             } else {
@@ -298,12 +293,10 @@ class SyncActivity : AppCompatActivity() {
             //scanWifi()
             getLocationUpdates()
         }
-
         /*
         task.addOnCompleteListener {
             Toast.makeText(this,"xd2",Toast.LENGTH_SHORT).show()
         }*/
-
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
                 try {
@@ -349,13 +342,13 @@ class SyncActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun checkAndRequestPermissions() {
         val permissions = arrayOf(
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION
         )
-
         val permissionsNeeded = permissions.filter {
             ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
         }.toTypedArray()
@@ -367,6 +360,7 @@ class SyncActivity : AppCompatActivity() {
             proceedWithFunctionality()
         }
     }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
     }
@@ -481,7 +475,7 @@ class SyncActivity : AppCompatActivity() {
                     if (!isMobileDataActive()) {
                         scanWifi()
                     } else {
-                        showAlertDialog("Conexión de datos móviles", "Tienes conexión de datos móviles activa")
+                        showAlertDialog("Conexión de datos móviles", "Tienes conexión de datos móviles , desactivalo ahora!")
                     }
                 }
             }
@@ -620,9 +614,6 @@ class SyncActivity : AppCompatActivity() {
                 Log.e("FirestoreError", "Error al obtener documento de Firestore", it)
             }
         }
-
-
-
     }
 
 
