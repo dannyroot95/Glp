@@ -210,7 +210,6 @@ class SyncActivity : AppCompatActivity() {
                     dialogConnectDevice.show()
                     saveDeviceInDatabase(qr)
                 }
-                //
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

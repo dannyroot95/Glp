@@ -58,8 +58,16 @@
             <ImageButton
                 android:layout_width="40dp"
                 android:id="@+id/btnSaveRegister"
-                android:src="@drawable/ic_save_white"
+                android:src="@drawable/ic_save_data"
                 android:backgroundTint="#D10000"
+                android:layout_height="40dp"/>
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:id="@+id/btnDownloadData"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_save_white"
+                android:backgroundTint="#006D20"
                 android:layout_height="40dp"/>
 
         </LinearLayout>

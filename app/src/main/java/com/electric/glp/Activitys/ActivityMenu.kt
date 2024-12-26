@@ -71,7 +71,6 @@ class ActivityMenu : AppCompatActivity() {
             builder.show()
         }
 
-
         setupViewPager()
     }
 
