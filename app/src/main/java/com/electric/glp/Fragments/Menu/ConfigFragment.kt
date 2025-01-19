@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.electric.glp.Activitys.SyncActivityConfig
 import com.electric.glp.R
 import com.electric.glp.Services.GLPMonitoringService
 import com.electric.glp.databinding.FragmentConfigBinding
@@ -141,6 +142,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config), OnMapReadyCallback {
     private fun setupEventHandlers() {
         binding.btnSave.setOnClickListener {
             updateUserData()
+        }
+
+        binding.btnNewDevice.setOnClickListener {
+            val intent = Intent(requireContext(), SyncActivityConfig::class.java)
+            startActivity(intent)
         }
 
         binding.btnSaveMonitoring.setOnClickListener {

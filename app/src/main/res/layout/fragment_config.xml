@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="-5dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/linearFragment3"
         android:layout_height="match_parent">
 
@@ -176,16 +176,44 @@
                 </LinearLayout>
 
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:text="Actualizar datos"
-                    android:layout_gravity="center"
-                    android:id="@+id/btnSave"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/teal_700"
-                    android:drawableLeft="@drawable/ic_update"
-                    android:textSize="11dp"
-                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:text="Actualizar datos"
+                        android:layout_gravity="center"
+                        android:id="@+id/btnSave"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/teal_700"
+                        android:drawableLeft="@drawable/ic_update"
+                        android:textSize="10sp"
+                        android:layout_height="wrap_content"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_height="0dp"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:text="Sincronizar dispositivo"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:id="@+id/btnNewDevice"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/teal_700"
+                        android:drawableLeft="@drawable/ic_settings"
+                        android:textSize="10sp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
 
                 <View
                     android:layout_width="match_parent"

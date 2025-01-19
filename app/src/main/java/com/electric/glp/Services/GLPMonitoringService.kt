@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.google.firebase.database.*
 
@@ -18,10 +19,16 @@ class GLPMonitoringService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Aquí llamas a tu lógica para ejecutar el servicio
         startForegroundService()
+        // Forzar reinicio
+        val restartIntent = Intent(applicationContext, this::class.java)
+        val pendingIntent = PendingIntent.getService(
+            this, 1, restartIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, pendingIntent)
 
-        return START_STICKY  // Asegura que el servicio se reinicie si es detenido
+        return START_STICKY
     }
 
 

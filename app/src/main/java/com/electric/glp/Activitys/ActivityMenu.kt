@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 
 class ActivityMenu : AppCompatActivity() {
@@ -35,6 +37,12 @@ class ActivityMenu : AppCompatActivity() {
         supportActionBar?.hide()
 
         requestNotificationPermission()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+            intent.data = Uri.parse("package:${packageName}")
+            startActivity(intent)
+        }
 
         auth = FirebaseAuth.getInstance()
 

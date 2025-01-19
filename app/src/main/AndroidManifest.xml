@@ -83,6 +83,9 @@
         <activity
             android:name=".Activitys.SyncActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activitys.SyncActivityConfig"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
