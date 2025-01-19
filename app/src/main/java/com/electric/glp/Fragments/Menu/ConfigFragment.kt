@@ -179,6 +179,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config), OnMapReadyCallback {
                     context.startService(intent)
                 }
             } else if (!isEnabled && isMyServiceRunning(GLPMonitoringService::class.java)) {
+                GLPMonitoringService.shouldRestartService = false
                 context.stopService(Intent(context, GLPMonitoringService::class.java))
             }
 

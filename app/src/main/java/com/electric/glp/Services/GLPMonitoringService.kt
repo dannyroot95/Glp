@@ -16,17 +16,23 @@ class GLPMonitoringService : Service() {
     private var valueEventListener: ValueEventListener? = null
     private var isNotificationSent = false
 
+    companion object {
+        var shouldRestartService = true
+    }
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForegroundService()
-        // Forzar reinicio
-        val restartIntent = Intent(applicationContext, this::class.java)
-        val pendingIntent = PendingIntent.getService(
-            this, 1, restartIntent, PendingIntent.FLAG_IMMUTABLE
-        )
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, pendingIntent)
+
+        if (shouldRestartService) {
+            val restartIntent = Intent(applicationContext, this::class.java)
+            val pendingIntent = PendingIntent.getService(
+                this, 1, restartIntent, PendingIntent.FLAG_IMMUTABLE
+            )
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, pendingIntent)
+        }
 
         return START_STICKY
     }
