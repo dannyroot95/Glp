@@ -1,6 +1,9 @@
 package com.electric.glp.Fragments.Menu
 
 import android.Manifest
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,12 +15,14 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.electric.glp.Utils.ConvertTimestampToDateTime
+import com.electric.glp.databinding.DialogDatetimePickerBinding
 import com.electric.glp.databinding.FragmentGeneralBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -26,6 +31,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.database.*
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Calendar
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 class GeneralFragment : Fragment() {
@@ -71,22 +81,22 @@ class GeneralFragment : Fragment() {
 
         listenerModeRegister()
         setupLineChart()
-        getParametersSensorFilter(database, "lastHour")
-        updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
+        getParametersSensorFilter(database, "last24Hours")
+        updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
 
         binding.chipLastHour.setOnClickListener {
             binding.linearFragment1.visibility = View.GONE
             binding.linearLottie.visibility = View.VISIBLE
             onRegister = "off"
-            updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
-            getParametersSensorFilter(database, "lastHour")
+            updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
+            getParametersSensorFilter(database, "last24Hours")
         }
 
         binding.chipNow.setOnClickListener {
             binding.linearFragment1.visibility = View.GONE
             binding.linearLottie.visibility = View.VISIBLE
             onRegister = "on"
-            updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
+            updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
             getParametersSensor(database)
         }
 
@@ -94,7 +104,7 @@ class GeneralFragment : Fragment() {
             binding.linearFragment1.visibility = View.GONE
             binding.linearLottie.visibility = View.VISIBLE
             onRegister = "off"
-            updateChipSelection(binding.chipMonth,binding.chipNow,binding.chipLastHour,binding.chipYear, Color.WHITE, Color.BLACK)
+            updateChipSelection(binding.chipMonth,binding.chipNow,binding.chipLastHour,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
             getParametersSensorFilter(database, "lastMonth")
         }
 
@@ -102,10 +112,15 @@ class GeneralFragment : Fragment() {
             binding.linearFragment1.visibility = View.GONE
             binding.linearLottie.visibility = View.VISIBLE
             onRegister = "off"
-            updateChipSelection(binding.chipYear,binding.chipMonth,binding.chipNow,binding.chipLastHour, Color.WHITE, Color.BLACK)
+            updateChipSelection(binding.chipYear,binding.chipMonth,binding.chipNow,binding.chipLastHour,binding.chipCustom, Color.WHITE, Color.BLACK)
             getParametersSensorFilter(database, "lastYear")
         }
 
+        binding.chipCustom.setOnClickListener {
+            showDateTimePickerDialog()
+            onRegister = "off"
+            updateChipSelection(binding.chipCustom,binding.chipMonth,binding.chipNow,binding.chipLastHour,binding.chipYear, Color.WHITE, Color.BLACK)
+        }
 
         binding.btnSaveRegister.setOnClickListener {
             saveRegisterToDatabase()
@@ -120,7 +135,7 @@ class GeneralFragment : Fragment() {
         }
   }
 
-    private fun updateChipSelection(selectedChip: View, deselectedChip: View,deselectedChip2: View,deselectedChip3: View, selectedTextColor: Int, deselectedTextColor: Int) {
+    private fun updateChipSelection(selectedChip: View, deselectedChip: View,deselectedChip2: View,deselectedChip3: View,deselectedChip4: View, selectedTextColor: Int, deselectedTextColor: Int) {
         // Actualiza el chip seleccionado
         selectedChip.background.setTint(Color.rgb(4, 156, 4))
         (selectedChip as? android.widget.TextView)?.setTextColor(selectedTextColor)
@@ -136,6 +151,9 @@ class GeneralFragment : Fragment() {
         // Actualiza el chip no seleccionado
         deselectedChip3.background.setTint(Color.rgb(237, 236, 236))
         (deselectedChip3 as? android.widget.TextView)?.setTextColor(deselectedTextColor)
+
+        deselectedChip4.background.setTint(Color.rgb(237, 236, 236))
+        (deselectedChip4 as? android.widget.TextView)?.setTextColor(deselectedTextColor)
 
     }
 
@@ -246,6 +264,8 @@ class GeneralFragment : Fragment() {
         sensorDataList.clear()
 
         val startTime = getStartTimestamp(filterType) / 1000
+        val endTime = getEndTimestamp(filterType) / 1000
+
         val prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val deviceId = prefs.getString("deviceId", null) ?: return
 
@@ -266,17 +286,18 @@ class GeneralFragment : Fragment() {
                         binding.smokeValue.text = "$smokeValue"
                         binding.lastUpdateTime.text = "Ultima actualizacion : "+ConvertTimestampToDateTime().convert(timeValue)
 
-                        val newData = mapOf(
-                            "co" to coValue,
-                            "glp" to glpValue,
-                            "smoke" to smokeValue,
-                            "timestamp" to ConvertTimestampToDateTime().convert(timeValue)
-                        )
-                        sensorDataList.add(newData)
-
-                        val index = (ctx++).toFloat()
-                        val entry = Entry(index, glpValue.toFloat())
-                        dataEntries.add(entry)
+                        if(timeValue in startTime..endTime){
+                            val newData = mapOf(
+                                "co" to coValue,
+                                "glp" to glpValue,
+                                "smoke" to smokeValue,
+                                "timestamp" to ConvertTimestampToDateTime().convert(timeValue)
+                            )
+                            sensorDataList.add(newData)
+                            val index = (ctx++).toFloat()
+                            val entry = Entry(index, glpValue.toFloat())
+                            dataEntries.add(entry)
+                        }
                     }
                     updateLineChart()
                     binding.linearFragment1.visibility = View.VISIBLE
@@ -285,7 +306,68 @@ class GeneralFragment : Fragment() {
                     binding.linearFragment1.visibility = View.GONE
                     binding.linearLottie.visibility = View.VISIBLE
                     onRegister = "on"
-                    updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear, Color.WHITE, Color.BLACK)
+                    updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
+                    getParametersSensor(database)
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("Failed to read value: ${error.message}")
+            }
+        }
+
+        query.addListenerForSingleValueEvent(currentListener!!)
+    }
+
+    private fun getParametersSensorFilterCustom(database: DatabaseReference, d1: Long,d2:Long) {
+        removeCurrentListener()  // Remover el listener actual antes de añadir uno nuevo
+        sensorDataList.clear()
+
+        val startTime = d1
+        val endTime = d2
+
+        val prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val deviceId = prefs.getString("deviceId", null) ?: return
+
+        val query = database.child(deviceId).child("registers").orderByChild("timestamp").startAt(startTime.toDouble())
+        var ctx = 0
+        currentListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    dataEntries.clear()
+                    snapshot.children.forEach { child ->
+                        val glpValue = child.child("glp").getValue(Int::class.java) ?: 0
+                        val coValue = child.child("co").getValue(Int::class.java) ?: 0
+                        val smokeValue = child.child("smoke").getValue(Int::class.java) ?: 0
+                        val timeValue = child.child("timestamp").getValue(Long::class.java) ?: 0
+
+                        binding.glpValue.text = "$glpValue"
+                        binding.coValue.text = "$coValue"
+                        binding.smokeValue.text = "$smokeValue"
+                        binding.lastUpdateTime.text = "Ultima actualizacion : "+ConvertTimestampToDateTime().convert(timeValue)
+
+                        if(timeValue in startTime..endTime){
+                            val newData = mapOf(
+                                "co" to coValue,
+                                "glp" to glpValue,
+                                "smoke" to smokeValue,
+                                "timestamp" to ConvertTimestampToDateTime().convert(timeValue)
+                            )
+                            sensorDataList.add(newData)
+                            val index = (ctx++).toFloat()
+                            val entry = Entry(index, glpValue.toFloat())
+                            dataEntries.add(entry)
+                        }
+                    }
+                    updateLineChart()
+                    binding.linearFragment1.visibility = View.VISIBLE
+                    binding.linearLottie.visibility = View.GONE
+                }else{
+                    binding.linearFragment1.visibility = View.GONE
+                    binding.linearLottie.visibility = View.VISIBLE
+                    onRegister = "on"
+                    updateChipSelection(binding.chipNow, binding.chipLastHour,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
                     getParametersSensor(database)
                 }
 
@@ -301,11 +383,34 @@ class GeneralFragment : Fragment() {
 
     private fun getStartTimestamp(filterType: String): Long {
         val currentTime = System.currentTimeMillis() / 1000  // Convierte milisegundos a segundos
+        val zoneId = ZoneId.systemDefault()
+        val today = LocalDate.now()
+        val startOfDay = LocalDate.now().atStartOfDay(zoneId).toInstant().toEpochMilli()
+        val firstDayOfMonth = today.withDayOfMonth(1)
+        val startOfMonth = (firstDayOfMonth.atStartOfDay(zoneId).toInstant().epochSecond)*1000
+        val firstDayOfYear = today.withDayOfYear(1)
+        val startOfYear = (firstDayOfYear.atStartOfDay(zoneId).toInstant().epochSecond)*1000
         return when (filterType) {
-            "last24Hours" -> currentTime - 86400
-            "lastWeek" -> currentTime - 604800
-            "lastMonth" -> currentTime - 2592000
-            "lastYear" -> currentTime - 31536000
+            "last24Hours" -> startOfDay
+            "lastMonth" -> startOfMonth
+            "lastYear" -> startOfYear
+            else -> currentTime - 3600
+        }
+    }
+
+    private fun getEndTimestamp(filterType: String): Long {
+        val currentTime = System.currentTimeMillis() / 1000  // Convierte milisegundos a segundos
+        val zoneId = ZoneId.systemDefault()
+        val today = LocalDate.now()
+        val endOfDay = LocalDate.now().atTime(23, 59, 59, 999_999_999).atZone(zoneId).toInstant().toEpochMilli()
+        val lastDayOfMonth = today.withDayOfMonth(today.lengthOfMonth())
+        val endOfMonth = (lastDayOfMonth.atTime(23, 59, 59).atZone(zoneId).toInstant().epochSecond)*1000
+        val lastDayOfYear = today.withDayOfYear(today.lengthOfYear())
+        val endOfYear = (lastDayOfYear.atTime(23, 59, 59).atZone(zoneId).toInstant().epochSecond)*1000
+        return when (filterType) {
+            "last24Hours" -> endOfDay
+            "lastMonth" -> endOfMonth
+            "lastYear" -> endOfYear
             else -> currentTime - 3600
         }
     }
@@ -471,6 +576,93 @@ class GeneralFragment : Fragment() {
                 override fun onCancelled(error: DatabaseError) {
                 }
             })
+        }
+    }
+
+    private fun showDateTimePickerDialog() {
+        val bindingx = DialogDatetimePickerBinding.inflate(LayoutInflater.from(requireContext()))
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(bindingx.root)
+            .setTitle("Seleccionar Fechas")
+            .setNegativeButton("Cancelar") { _, _ ->
+                binding.linearFragment1.visibility = View.GONE
+                binding.linearLottie.visibility = View.VISIBLE
+                onRegister = "off"
+                updateChipSelection(binding.chipLastHour, binding.chipNow,binding.chipMonth,binding.chipYear,binding.chipCustom, Color.WHITE, Color.BLACK)
+                getParametersSensorFilter(database, "last24Hours")
+                Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
+            }
+            .create()
+
+        bindingx.etStartDate.setOnClickListener { showDateTimePicker(bindingx.etStartDate) }
+        bindingx.etEndDate.setOnClickListener { showDateTimePicker(bindingx.etEndDate) }
+
+        bindingx.btnAccept.setOnClickListener {
+
+            val startTimestamp = convertToTimestamp(bindingx.etStartDate.text.toString())
+            val endTimestamp = convertToTimestamp(bindingx.etEndDate.text.toString())
+
+            if (startTimestamp != null && endTimestamp != null) {
+                if(endTimestamp > startTimestamp){
+                    binding.linearFragment1.visibility = View.GONE
+                    binding.linearLottie.visibility = View.VISIBLE
+                    getParametersSensorFilterCustom(database, startTimestamp,endTimestamp)
+                    dialog.dismiss()
+                }else{
+                    getParametersSensorFilter(database, "last24Hours")
+                    Toast.makeText(
+                        requireContext(),
+                        "La fecha inicial debe ser menor a la fecha final",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+            }else{
+                Toast.makeText(
+                    requireContext(),
+                    "Complete los campos",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showDateTimePicker(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val timePicker = TimePickerDialog(
+                    requireContext(),
+                    { _, hourOfDay, minute ->
+                        val selectedDate = Calendar.getInstance()
+                        selectedDate.set(year, month, dayOfMonth, hourOfDay, minute)
+                        editText.setText(dateFormat.format(selectedDate.time))
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    true
+                )
+                timePicker.show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun convertToTimestamp(dateTime: String): Long? {
+        return try {
+            val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            format.parse(dateTime)?.time?.div(1000)  // Convertir a segundos (Firebase usa epoch seconds)
+        } catch (e: Exception) {
+            null
         }
     }
 

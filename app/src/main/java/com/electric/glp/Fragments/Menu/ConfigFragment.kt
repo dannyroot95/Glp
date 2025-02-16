@@ -1,5 +1,6 @@
 package com.electric.glp.Fragments.Menu
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -46,6 +47,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config), OnMapReadyCallback {
         setupEventHandlers()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadUserData() {
         val userRef = FirebaseFirestore.getInstance().collection("users").document(userId)
         userRef.addSnapshotListener { snapshot, e ->
